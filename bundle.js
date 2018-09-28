@@ -108,7 +108,6 @@ function Winwheel(options, drawWheel)
         }
     }
 
-
     // ------------------------------------------
     // If the id of the canvas is set, try to get the canvas as we need it for drawing.
     if (this.canvasId)
@@ -159,7 +158,6 @@ function Winwheel(options, drawWheel)
         this.ctx = null;
     }
 
-
     // ------------------------------------------
     // Add array of segments to the wheel, then populate with segments if number of segments is specified for this object.
     this.segments = new Array(null);
@@ -181,7 +179,6 @@ function Winwheel(options, drawWheel)
     // ------------------------------------------
     // Call function to update the segment sizes setting the starting and ending angles.
     this.updateSegmentSizes();
-
 
     // If the text margin is null then set to same as font size as we want some by default.
     if (this.textMargin === null)
@@ -695,7 +692,6 @@ Winwheel.prototype.drawSegments = function()
                     strokeStyle = this.strokeStyle;
 
                 this.ctx.strokeStyle = strokeStyle;
-
 
                 // Check there is a strokeStyle or fillStyle, if either the the segment is invisible so should not
                 // try to draw it otherwise a path is began but not ended.
@@ -2339,7 +2335,7 @@ let restaurants = null
 let wheelName = wheelNameEl.textContent
 
 // Resturants near Main St. Santa Monica, CA, USA
-const defaultRestaurants = ['Tacos Por Favor', 'Samosa House', 'Komodo', 'Cafe 212 Pier', 'Fiesta Brava', `George's`, 'Bay Cities', 'L&L Hawaiian', `Morfia's`, 'In-N-Out', 'Chick-fil-A', 'Thai vegan', 'Subway', 'JINYA Ramen', 'Taco Truck', `Jersey Mike's`]
+const defaultRestaurants = ['Yes', 'No']
 
 const localStorageKeySegments = 'lunchwheel:segments'
 const localStorageKeyWheelName = 'lunchwheel:name'
