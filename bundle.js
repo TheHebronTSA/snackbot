@@ -16,6 +16,18 @@ module.exports = function (min, max) {
 },{}],2:[function(require,module,exports){
 module.exports = require('./lib/Winwheel');
 },{"./lib/Winwheel":3}],3:[function(require,module,exports){
+    var config = {
+        apiKey: "AIzaSyAN3WyUo_q1hjP0euAQt29MpwTFsVJ2FSw",
+        authDomain: "hebron-tsa-snacks.firebaseapp.com",
+        databaseURL: "https://hebron-tsa-snacks.firebaseio.com",
+        projectId: "hebron-tsa-snacks",
+        storageBucket: "hebron-tsa-snacks.appspot.com",
+        messagingSenderId: "768958880792"
+    };
+    firebase.initializeApp(config);
+
+    var database = firebase.database().ref('/members');
+
 /*
     Winwheel.js, by Douglas McKechie @ www.dougtesting.net
     See website for tutorials and other documentation.
@@ -57,7 +69,7 @@ function Winwheel(options, drawWheel)
         'centerY'           : null,         // Y position of the wheel center. If left null at time of construct the center of the canvas is used.
         'outerRadius'       : null,         // The radius of the outside of the wheel. If left null it will be set to the radius from the center of the canvas to its shortest side.
         'innerRadius'       : 0,            // Normally 0. Allows the creation of rings / doughnuts if set to value > 0. Should not exceed outer radius.
-        'numSegments'       : 1,            // The number of segments. Need at least one to draw.
+        'numSegments'       : 1,
         'drawMode'          : 'code',       // The draw mode. Possible values are 'code', 'image', 'segmentImage'. Default is code which means segments are drawn using canvas arc() function.
         'rotationAngle'     : 0,            // The angle of rotation of the wheel - 0 is 12 o'clock position.
         'textFontFamily'    : 'Arial',      // Segment text font, you should use web safe fonts.
@@ -2119,7 +2131,7 @@ function Segment(options)
     // Define default options for segments, most are null so that the global defaults for the wheel
     // are used if the values for a particular segment are not specifically set.
     defaultOptions = {
-        'size'              : null, // Leave null for automatic. Valid values are degrees 0-360. Use percentToDegrees function if needed to convert.
+        'size'              : winwheelPercentToDegrees(54), // Leave null for automatic. Valid values are degrees 0-360. Use percentToDegrees function if needed to convert.
         'text'              : '',   // Default is blank.
         'fillStyle'         : null, // If null for the rest the global default will be used.
         'strokeStyle'       : null,
@@ -2331,11 +2343,10 @@ const spinButton = document.querySelector('.SpinButton')
 const result = document.querySelector('.WheelResult')
 const body = document.body
 let resultTimeout = null
-let restaurants = null
+let options = null
 let wheelName = wheelNameEl.textContent
 
-// Resturants near Main St. Santa Monica, CA, USA
-const defaultRestaurants = ['Yes', 'No']
+const defaultOptions = ['No', 'Yes']
 
 const localStorageKeySegments = 'lunchwheel:segments'
 const localStorageKeyWheelName = 'lunchwheel:name'
@@ -2347,17 +2358,17 @@ const colors = [
 window.lunchWheel = {
   segments: function (list) {
     if (!Array.isArray(list)) {
-      return restaurants
+      return options
     }
 
-    restaurants = list
+    options = list
 
     try {
       localStorage.setItem(localStorageKeySegments, JSON.stringify(list))
     } catch (error) { }
 
     wheel = createWheel()
-    return restaurants
+    return options
   },
   name: function (name) {
     if (typeof name !== 'string') {
@@ -2377,11 +2388,11 @@ window.lunchWheel = {
 }
 
 try {
-  restaurants = JSON.parse(localStorage.getItem(localStorageKeySegments))
+  options = JSON.parse(localStorage.getItem(localStorageKeySegments))
 } catch (error) {}
 
-if (!restaurants) {
-  restaurants = defaultRestaurants
+if (!options) {
+  options = defaultOptions
 }
 
 try {
@@ -2393,7 +2404,7 @@ try {
 } catch (error) {}
 
 function createWheel () {
-  const segments = restaurants.map((x, i) => {
+  const segments = options.map((x, i) => {
     return {
       'fillStyle': colors[i],
       'text': x,
@@ -2405,7 +2416,7 @@ function createWheel () {
   return new WinWheel({
     'outerRadius': 218,
     'innerRadius': 75,
-    'textFontSize': 24,
+    'textFontSize': 30,
     'textOrientation': 'horizontal',
     'textAlignment': 'outer',
     'numSegments': segments.length,
@@ -2471,31 +2482,8 @@ function onMessage (event) {
   }
 }
 
-/**
- * Clock
- */
-
-const clock = document.querySelector('.clock')
-
-function startTime () {
-  const today = new Date()
-  let h = today.getHours()
-  let m = today.getMinutes()
-  let s = today.getSeconds()
-  const A = h > 12 ? 'PM' : 'AM'
-  h = pad(h > 12 ? h - 12 : h)
-  clock.innerHTML = h + ':' + pad(m) + ':' + pad(s) + A
-  setTimeout(startTime, 500)
-}
-
-function pad(i) {
-  if (i < 10) {
-    i = '0' + i
-  }
-
-  return i
-}
-
-startTime()
-
 },{"random-int":1,"winwheel":2}]},{},[4]);
+
+window.onload = function() {
+
+  };
